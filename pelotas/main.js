@@ -62,7 +62,21 @@ Ball.prototype.update = function(){
 
     this.x += this.velX;
     this.y += this.velY;
-};
+}
+
+Ball.prototype.collisionDetect = function() {
+    for (var j = 0; j < balls.length; j++) {
+      if (!(this === balls[j])) {
+        var dx = this.x - balls[j].x;
+        var dy = this.y - balls[j].y;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+  
+        if (distance < this.size + balls[j].size) {
+          balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) +')';
+        }
+      }
+    }
+  }
 
 //ahora añadimos las pelotas
 //primero definimos un sitio donde almacenarlas
@@ -92,12 +106,19 @@ function loop() {
     for (var i = 0; i < balls.length; i++) {
       balls[i].draw();
       balls[i].update();
+      balls[i].collisionDetect();
     }
   
     requestAnimationFrame(loop);
   }
 
   loop();
+
+  //ahora añadimos detección de colisiones
+
+
+
+
 
 
 
