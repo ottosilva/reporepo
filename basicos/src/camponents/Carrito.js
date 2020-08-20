@@ -1,0 +1,32 @@
+import React from 'react';
+import './carrito.css'
+import Producto from './Producto';
+
+const Carrito = ({carrito, agregarProducto}) => (
+    <div className="carrito">
+        <h2>Tu carrito de compras</h2>
+
+        {carrito.length === 0
+        //este signo de pregunta y los dos puntos, son como un if y else pero se llaman ternarios, amigo re flashero kasjas 
+        ? <p>No hay elementos en el carrito</p>
+        : carrito.map( producto => (
+            <Producto
+                key={producto.id}
+                producto={producto}
+                carrito={carrito}
+                agregarProducto={agregarProducto}
+
+                />
+
+        )
+            
+        )
+        
+        }
+    </div>
+
+);
+    
+
+ 
+export default Carrito;
