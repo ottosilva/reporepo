@@ -16,6 +16,7 @@ function App() {
 
   //useEffect para realizar ciertas operaciones cuando el state cambia, tambien denominado array de dependencias (?
   useEffect( ()=> {
+    let citasIniciales = JSON.parse(localStorage.getItem('citas')); //redeclarar citasIniciales dentro del componente
     if(citasIniciales) {
       localStorage.setItem('citas', JSON.stringify(citas))
     } else {
