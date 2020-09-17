@@ -1,0 +1,8 @@
+66- muestra del resultado
+67-crear react-app, limpieza de archivos, cargamos hoja de estilos
+68-creamos componente para que el usuario ingrese su presupuesto
+el componente se llama Pregunta, y contiene un titulo y los dos input, el que es pa meter el numero del presupuesto
+y el boton tipo submit, para hacerle click y decir cheee este es mi presupuesto.
+ademas lo importamos en el App.js y los mostramos dentro del container innnsta
+
+69- aca vamos a agregar el state local del componente Pregunta, y validarlo
