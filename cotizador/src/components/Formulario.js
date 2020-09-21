@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+
+import {obtenerDiferenciaYear, calcularMarca, calcularPlan} from '../helper';
 
 const Campo = styled.div`
     display: flex;
@@ -41,8 +44,17 @@ const Boton = styled.button`
     }
 `;
 
+const Error = styled.div`
+    background-color: red;
+    color: white;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+`;
 
-const Formulario = () => {
+
+const Formulario = ({guardarResumen, guardarCargando}) => {
 
     //creamos el state del formulario
     const [datos, guardarDatos] = useState({
@@ -50,6 +62,8 @@ const Formulario = () => {
         year: '',
         plan: ''
     });
+
+    const [error, guardarError] = useState(false);
 
     //extraemos los valores del state, con distructuring
     const {marca, year, plan} = datos;
@@ -60,15 +74,68 @@ const Formulario = () => {
             ...datos,
             [e.target.name] : e.target.value
         })
+    };
+
+    //Cuando el usuario presiona submit
+    const cotizarSeguro = e => {
+    e.preventDefault();
+        if (marca.trim()===''|| year.trim() === '' || plan.trim() === '') {
+            guardarError(true);
+        return;
+        };
+            guardarError(false);
+        //una base de 2000
+        let resultado = 2000;
+        //obtener la diferencia de años
+        const diferencia = obtenerDiferenciaYear(year);
+    
+        //por cada año hay que restar el 3%
+        resultado -= ((diferencia*3) *resultado)/ 100;
+      
+
+        //americano 15%
+        //asiatico 5%
+        //europeo 30%
+        resultado = calcularMarca(marca) * resultado;
+        
+
+        //Basico aumenta 20%
+        //Completo 50%
+        const incrementoPlan = calcularPlan(plan);
+        resultado = parseFloat(incrementoPlan * resultado).toFixed(2);
+        guardarCargando(true);
+        setTimeout(() => {
+
+            //elimina el spinner
+            guardarCargando(false);
+            //pasa la info al componente principal
+            guardarResumen({
+                cotizacion: Number(resultado),
+                datos
+            });
+        },500
+
+        );
+
+
+        //total
+
     }
 
     return (
-        <form>
+        <form
+        onSubmit={cotizarSeguro}
+        >
+        {error 
+        ? <Error>Todos los campos son obligatorios</Error>
+        : null
+        }
             <Campo>
                 <Label>Marca</Label>
                 <Select
                     name="marca"
-                    value="marca"
+                    value={marca}
+                    onChange={obtenerInformacion}
                 >
                     <option value="">--Seleccione--</option>
                     <option value="americano">--Americano--</option>
@@ -81,7 +148,9 @@ const Formulario = () => {
                 <Label>Año</Label>
                 <Select
                 name="year"
-                value="year"
+                value={year}
+                onChange={obtenerInformacion}
+                
                 >
                     <option value="">-- Seleccione --</option>
                     <option value="2021">2021</option>
@@ -104,6 +173,7 @@ const Formulario = () => {
                     name="plan"
                     value="basico"
                     checked={plan === "basico"}
+                    onChange={obtenerInformacion}
                 /> Básico
 
                 <InputRadio 
@@ -111,13 +181,21 @@ const Formulario = () => {
                     name="plan"
                     value="completo"
                     checked={plan === "completo"}
+                    onChange={obtenerInformacion}
                 /> Completo
             </Campo>
-            <Boton type="button">Cotizar</Boton>
+            
+            <Boton type="submit">Cotizar</Boton>
 
         </form>
 
       );
+};
+
+Formulario.propTypes = {
+    guardarResumen: PropTypes.func.isRequired,
+    guardarCargando: PropTypes.func.isRequired
 }
+
  
 export default Formulario;
