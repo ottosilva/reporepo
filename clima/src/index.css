@@ -12,6 +12,13 @@ nav .brand-logo {
   color: white;
 }
 
+.input-field button {
+  color:black;
+  font-weight: bold;
+  width: auto;
+  height: auto;
+}
+
 .input-field input[type=text]:focus + label {
   color: white;
 } 
@@ -34,6 +41,7 @@ input[type=text]:not(.browser-default):focus:not([readonly]) + label {
   color: white;
 }
 
+
 .contenedor-form {
   padding: 3rem 0 1px 0;
   background-color: #03a9f4;
@@ -51,6 +59,7 @@ input[type=text]:not(.browser-default):focus:not([readonly]) + label {
   margin-top: 3rem;
   text-align: center;
   text-emphasis: left;
+  font-weight: bold;
 }
 .card-panel h2 {
   font-size: 1.6rem;
