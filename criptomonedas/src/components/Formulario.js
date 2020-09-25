@@ -1,7 +1,9 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import styled from '@emotion/styled';
-
+import Error from './Error'
 import useMoneda from '../hooks/useMoneda';
+import useCriptomoneda from '../hooks/useCriptomoneda';
+import axios from 'axios';
 
 
 const Boton = styled.input`
@@ -22,7 +24,11 @@ const Boton = styled.input`
     }
 `;
 
-const Formulario = () => {
+const Formulario = ({guardarMoneda, guardarCriptomoneda}) => {
+
+    //state del listado de criptomonedas
+    const [listacripto, guardarCriptomonedas] = useState([]);
+    const [error, guardarError] = useState(false);
 
     const MONEDAS = [
         {codigo:'USD', nombre:'Dolar de Estados Unidos'},
@@ -33,11 +39,47 @@ const Formulario = () => {
     ];
 
     //utilizamos useMoneda
-    const [moneda, SelectMonedas, actualizarState] = useMoneda('Elige tu moneda form ','',MONEDAS);
+    const [moneda, SelectMonedas] = useMoneda('Elige tu moneda','',MONEDAS);
+
+    //utilizamos useCriptoMoneda
+    const [criptomoneda, SelectCripto] = useCriptomoneda('Elige tu Criptomoneda', '', listacripto);
+
+    //Ejecutar llamado a la api
+    useEffect(() =>{
+        const consultarAPI = async () =>{
+            const url ='https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD';
+            const resultado = await axios.get(url);
+            guardarCriptomonedas(resultado.data.Data);
+        }
+        consultarAPI();
+    }, []);
+
+    //cuando el usuario hace submit
+    const cotizarMoneda = e =>{
+        e.preventDefault();
+
+        //validar si ambos campos estan llenos
+        if (moneda === '' || criptomoneda === ''){
+            guardarError(true);
+            return;
+        } 
+
+        //si pasa la validacion, pasar los datos al componente principal
+        guardarError(false);
+        guardarMoneda(moneda);
+        guardarCriptomoneda(criptomoneda);
+    }
+
     return ( 
-        <form>
-            
+        <form
+            onSubmit={cotizarMoneda}
+        >
+            {error ? <Error mensaje='tremendo error amigo'/> : null}
+
             <SelectMonedas/>
+
+            <SelectCripto/>
+            
             <Boton
                 type="submit"
                 value="Calcular"
