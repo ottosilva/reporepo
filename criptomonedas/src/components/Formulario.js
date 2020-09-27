@@ -74,7 +74,7 @@ const Formulario = ({guardarMoneda, guardarCriptomoneda}) => {
         <form
             onSubmit={cotizarMoneda}
         >
-            {error ? <Error mensaje='tremendo error amigo'/> : null}
+            {error ? <Error mensaje='completa los campos amigo ajja'/> : null}
 
             <SelectMonedas/>
 
