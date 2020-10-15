@@ -1,18 +1,25 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
+import ListaRecetas from './components/ListaRecetas';
+import CategoriasProvider from './contex/CategoriasContext';
+import RecetasProvider from './contex/RecetasContext';
+
 
 function App() {
   return (  
-    <Fragment>
-      <Header/>
-      
-      <div className="container mt-5">
-        <div className="row">
-          <Formulario />
+    <CategoriasProvider>
+      <RecetasProvider>
+        <Header/>
+        
+        <div className="container mt-5">
+          <div className="row">
+            <Formulario />
+          </div>
+          <ListaRecetas/>
         </div>
-      </div>
-    </Fragment>
+      </RecetasProvider>
+    </CategoriasProvider>
   );
 }
 
