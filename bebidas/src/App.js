@@ -2,22 +2,28 @@ import React from 'react';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
 import ListaRecetas from './components/ListaRecetas';
+
 import CategoriasProvider from './contex/CategoriasContext';
 import RecetasProvider from './contex/RecetasContext';
+import ModalProvider from './contex/ModalContext';
+
 
 
 function App() {
   return (  
     <CategoriasProvider>
       <RecetasProvider>
-        <Header/>
-        
-        <div className="container mt-5">
-          <div className="row">
-            <Formulario />
+        <ModalProvider>
+          <Header/>
+          
+          <div className="container mt-5">
+            <div className="row">
+              <Formulario />
+            </div>
+            <ListaRecetas/>
           </div>
-          <ListaRecetas/>
-        </div>
+          
+        </ModalProvider>
       </RecetasProvider>
     </CategoriasProvider>
   );
