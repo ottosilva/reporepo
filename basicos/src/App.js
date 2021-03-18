@@ -30,7 +30,7 @@ function App() {
       <Header 
         titulo = "Tienda virtual"
       />
-      <h1>Lista de productos</h1>
+      <h1>Listado de productos</h1>
       {productos.map(producto =>(
 
         <Producto 
